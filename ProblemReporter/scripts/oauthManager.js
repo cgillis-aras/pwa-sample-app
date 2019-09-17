@@ -31,7 +31,7 @@ function oauthLogin(url, database, username, password, clientID) {
                         let body = new FormData();
                         body.append("grant_type", "password");
                         body.append("scope", "Innovator");
-                        body.append("client_id", "IOMApp");
+                        body.append("client_id", clientID);
                         body.append("username", username);
                         body.append("password", password);
                         body.append("database", database);

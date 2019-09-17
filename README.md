@@ -7,7 +7,6 @@ This project contains a sample Progressive Web App (PWA) that connects to Aras I
 
 ![This project is a work in progress!](https://raw.githubusercontent.com/ArasLabs/.github/master/images/work-in-progress-banner.png)
 
-
 ## Installation
 
 #### Important!
@@ -21,6 +20,10 @@ This project contains a sample Progressive Web App (PWA) that connects to Aras I
 
 ### Install Steps
 
+This application does not require any imports to the Innovator database.
+
+#### IIS Install
+
 1. Download or clone the pwa-sample-app to the Innovator server. 
 2. Open the IIS manager on the server.
 3. Expand the tree in the connection pane down to the web application for your Innovator instance: **{server} > Sites > Default Web Site > {web alias}**
@@ -30,7 +33,34 @@ This project contains a sample Progressive Web App (PWA) that connects to Aras I
 7. Click **Ok** to close the Add Application dialog. 
 8. Restart IIS.
 
-This application does not require any imports to the Innovator database.
+#### OAuth Configuration
+
+This project uses a custom OAuth client registry. Client registries are used to define things like supported methods of authentication and token lifetimes (the amount of time until a token expires). The steps below show how to configure this custom client registry.
+
+1. Navigate to your Aras Innovator OAuth Server install location
+   1. By default `C:\Program Files (x86)\Aras\Innovator\OAuthServer`
+2. Open the `OAuth.config` file
+3. Scroll to the bottom of the `<clientRegistries>` tag
+4. Add a new client registry like the one
+5. Save this file
+6. Restart IIS
+
+```xml
+<clientRegistry id="ProblemReporter" enabled="true">
+    <allowedScopes>
+        <scope name="openid"></scope>
+        <scope name="Innovator"></scope>
+        <scope name="offline_access"></scope>
+    </allowedScopes>
+    <allowedGrantTypes>
+        <grantType name="password"></grantType>
+    </allowedGrantTypes>
+    <redirectUris>
+        <redirectUri value="iomapp://token/"></redirectUri>
+    </redirectUris>
+    <tokenLifetime accessTokenLifetime="3600" authorizationCodeLifetime="300" refreshTokenSlidingLifetime="36000" refreshTokenOneTimeOnly="true" refreshTokenAbsoluteExpiration="false"></tokenLifetime>
+</clientRegistry>
+```
 
 ## Usage
 
